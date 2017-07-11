@@ -1,14 +1,17 @@
 import React,  { Component } from 'react';
+import {connect} from 'react-redux';
+import {changeLoanTypeAction, changePropertyTypeAction} from './../../ducks/firstView';
 import {Link} from 'react-router-dom'
 
 class WizardOne extends Component {
     render(){
+        console.log(this.props);
         return(
             <div className="parent-div">
                 <div className="vert-align">
                     <p>What type of loan will you be needing?</p> <br />
                 
-                    <select onChange={this.props.handleLoanType}>
+                    <select onChange={(e) => this.props.handleLoanType(e.target.value)}>
 
                         <option type="text" value="Home Purchase" >Home Purchase</option>
                         <option type="text" value="Refinance" >Refinance</option>
@@ -18,7 +21,7 @@ class WizardOne extends Component {
 
                     <p>What type of property are you purchasing?</p> <br />
 
-                    <select onChange={this.props.handlePropType}>
+                    <select onChange={(e) => this.props.handlePropType(e.target.value)}>
 
                         <option value="Single Family Home">Single Family Home</option>
                         <option value="Town Home">Townhome</option>
@@ -34,4 +37,17 @@ class WizardOne extends Component {
         )
     }
 }
-export default WizardOne; 
+
+function mapStateToProps(state) {
+    return {
+        loanType: state.loanType,
+        propertyType: state.propertyType
+    }
+}
+
+export default connect(mapStateToProps,
+    {
+        handleLoanType: changeLoanTypeAction,
+        handlePropType: changePropertyTypeAction
+    }
+)(WizardOne); 
